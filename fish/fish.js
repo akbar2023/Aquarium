@@ -4,33 +4,42 @@ var ctx = canvas.getContext('2d');
 
 // Contains instances of class Fish
 var fishes = [];
-// var fishColor = ['red', 'blue', 'white', 'black';]
 
 class Fish {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.width = 20;
-    this.height = 10;
-    // this.color // todo: give a random color to the fish from array fishColor
+    this.w = 20;
+    this.h = 10;
+    this.id = fishes.length;
 
+    const fish = this;
+    this.move = function () {
+      let movementY = Math.random();
+      let movementX = Math.random();
+      fish.y += movementY;
+      fish.x += movementX;
+      ctx.fillRect(fish.x, fish.y, fish.w, fish.h);
+    };
+    
     // Push each new fish in the fishes array above.
     fishes.push(this);
+    
   }
 }
 
-
-// ctx.fillStyle = 'rgb(200, 0, 0)';
-// ctx.fillRect(10, 10, 50, 50);
-
-// ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
-// ctx.fillRect(30, 30, 50, 50);
-
-function newFish(event) {
-  let fish = new Fish(event.offsetX, event.offsetY)
-  ctx.fillStyle = 'rgb(20, 50, 80)';
-  ctx.fillRect(fish.x, fish.y, fish.width, fish.height);
-  console.log(event.offsetX); 
+function animateFish() {
+  
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for(let i = 0; i < fishes.length; i++) {
+    fishes[i].move();
+  }
 }
+setInterval(animateFish, 10); //todo: adda a narray of 1 and -1 to define a good movement randomly
 
-document.getElementById('aquarium').addEventListener('click', newFish)
+  function createFish(event) {
+    let fish = new Fish(event.offsetX, event.offsetY);
+    console.log(fish.x);
+  }
+
+  document.getElementById('aquarium').addEventListener('click', createFish);
