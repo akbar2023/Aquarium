@@ -28,13 +28,6 @@ function getMousePos(canvas, event) {
   };
 }
 
-/*
-function create(event) {
-  let fish = new Fish(event.offsetX, event.offsetY);
-  return fish;
-}
-*/
-
 function create(event) {
   let coordinates = getMousePos(canvas, event);
   console.log(coordinates);

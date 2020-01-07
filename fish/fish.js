@@ -1,8 +1,3 @@
-function randomNum() {
-  let num = Math.floor(Math.random() * 20) + 1;
-  num *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
-  return num;
-}
 
 class Fish {
 
@@ -15,10 +10,15 @@ class Fish {
   }
 
   move() {
-    this.y += randomNum();
-    this.x += randomNum();
+    this.y += Fish.randomNum();
+    this.x += Fish.randomNum();
     ctx.fillRect(this.x, this.y, this.w, this.h);
   }
 
+  static randomNum() {
+    let num = Math.floor(Math.random() * 20) + 1;
+    num *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+    return num;
+  }
 
 }
