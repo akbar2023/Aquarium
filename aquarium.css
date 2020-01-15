@@ -8,3 +8,11 @@ body{
 #aquarium {
   background-image: linear-gradient(rgb(109, 189, 238), rgb(36, 118, 169));
 }
+
+#button {
+  width: 100px;
+  height: 40px;
+  background-color: red;
+  border: 5px solid #e67171;
+  border-radius: 5px;
+}

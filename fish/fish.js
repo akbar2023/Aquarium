@@ -11,7 +11,7 @@ class Fish {
   }
 
 
-  // y=ax et y=ax+b
+  // coefficient de la droite: y = ax+b
   nextPoint() {
     this.targetX = this.x + this.increment;
     this.targetY = this.coefficient * this.targetX + this.inconnue;
@@ -36,30 +36,22 @@ class Fish {
     let limitX = this.targetX + this.w > 800 || this.targetX < 0;
     let limitY = this.targetY + this.h > 400 || this.targetY < 0;
 
-    // if (!limitX && !limitY) {
-    //   console.log('out');
-    //   this.x = this.targetX;
-    //   this.y = this.targetY;
-    // } else {
-    //   this.direction();
-    // }
-
     while (limitX || limitY) {
       this.direction();
       this.nextPoint();
       limitX = this.targetX + this.w > 800 || this.targetX < 0;
       limitY = this.targetY + this.h > 400 || this.targetY < 0;
     }
-  
+
     this.x = this.targetX;
     this.y = this.targetY;
-
 
     ctx.fillRect(this.x, this.y, this.w, this.h);
   }
 
+  // Méthode static n'est utlisable uniquement via Fish.randoNum. Pas une prototype de la class Fish donc non utilisable par ses instances.
   static randomNum() {
-    let num = Math.random() * 10000;
+    let num = Math.random() * 800;
     num *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
     return num;
   }

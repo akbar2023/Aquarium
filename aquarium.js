@@ -12,12 +12,11 @@ function animate() {
   }
 }
 
-function start(){
+function start() {
   setInterval(animate, 100);
 }
 
 document.getElementById('button').addEventListener('click', start);
-
 
 
 function getMousePos(canvas, event) {
