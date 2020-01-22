@@ -1,55 +1,70 @@
 
-var canvas = document.getElementById('aquarium');
-var ctx = canvas.getContext('2d');
-
-// Contains instances of class Fish
-var fishes = [];
 var fishColor = ['red', 'rgb(20, 50, 80)', 'white', 'black', 'skyblue', 'coral', 'yellow', 'lime', 'rgba(0, 0, 200, 0.5)', 'rebeccapurple'];
 
 class Fish {
+
   constructor(x, y) {
     this.x = x;
     this.y = y;
     this.w = 20;
     this.h = 10;
-    this.color = function() {
-      let i = Math.random()*10;
-      return i = Math.floor(i);
-    };
-    this.id = fishes.length;
-    this.colour = this.color();
-    //ctx.fillStyle = fishColor[this.color()]; // if use this every fish change their color :/       *****COLOR*****
-
-    const fish = this;
-    this.move = function () {
-      let movementY = Math.random();
-      let movementX = Math.random();
-      fish.y += movementY;
-      fish.x += movementX;
-      // ctx.beginPath();
-      ctx.fillStyle = fishColor[fish.colour]; // It seems like working good but I don't think that is a good idea       *****COLOR*****
-      // debugger;
-      ctx.fillRect(fish.x, fish.y, fish.w, fish.h);
-    };
-    
-    // Push each new fish in the fishes array above.
-    fishes.push(this);
-    
+    this.direction();
+    this.id = myFishes.length;
+    this.color = fishColor[Fish.colorIndex()];
+    this.id = myFishes.length;
   }
+
+
+  // coefficient of the straith line: y = ax+b
+  nextPoint() {
+    this.targetX = this.x + this.increment;
+    this.targetY = this.coefficient * this.targetX + this.inconnue;
+    if (Math.abs(this.targetY - this.y) > Math.abs(this.increment) && Math.abs(this.coefficient) > 0) {
+      this.targetY = this.y + this.increment;
+      this.targetX = (this.targetY - this.inconnue) / this.coefficient;
+    }
+  }
+
+
+  direction() {
+    Math.random() > .5 ? this.increment = 1 : this.increment = -1;
+    this.yB = Fish.randomNum();
+    this.xB = Fish.randomNum();
+    this.coefficient = (this.yB - this.y) / (this.xB - this.x);
+    this.inconnue = this.y - this.coefficient * this.x;
+  }
+
+  move() {
+
+    this.nextPoint();
+    let limitX = this.targetX + this.w > 800 || this.targetX < 0;
+    let limitY = this.targetY + this.h > 400 || this.targetY < 0;
+
+    while (limitX || limitY) {
+      this.direction();
+      this.nextPoint();
+      limitX = this.targetX + this.w > 800 || this.targetX < 0;
+      limitY = this.targetY + this.h > 400 || this.targetY < 0;
+    }
+
+    this.x = this.targetX;
+    this.y = this.targetY;
+
+    ctx.fillStyle = this.color;
+
+    ctx.fillRect(this.x, this.y, this.w, this.h);
+  }
+
+  // static method usable only via Fish.randoNum. Since non usable by instances.
+  static randomNum() {
+    let num = Math.random() * 800;
+    num *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+    return num;
+  }
+
+  static colorIndex() {
+    let i = Math.random()*10;
+    return i = Math.floor(i);
+  };
+
 }
-
-function animateFish() {
-  
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for(let i = 0; i < fishes.length; i++) {
-    fishes[i].move();
-  }
-}
-setInterval(animateFish, 10); //todo: adda a narray of 1 and -1 to define a good movement randomly
-
-  function createFish(event) {
-    let fish = new Fish(event.offsetX, event.offsetY);
-    console.log(fish.x);
-  }
-
-  document.getElementById('aquarium').addEventListener('click', createFish);
